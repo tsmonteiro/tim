@@ -617,7 +617,19 @@ run_local_test <- function( res_table, ctx, test_name,
   
   # Check if operator output is a table, list of tables or relation
   # Then build the tables as they are in Tercen
-  if( class(res_table)[[1]] == "JoinOperator"){
+  if( class(res_table)[[1]] == "OperatorResult"){
+    res_table <- res_table$tables
+    
+    res_table <- (lapply(res_table, function(x){
+      res_table <- env_to_df(x)
+      return(res_table)
+    }))
+    
+    out_tbl_files <- build_test_for_table_list(in_proj, res_table, ctx, test_name, 
+                                               test_folder = tmp_folder, 
+                                               docIdMapping=docIdMapping)  
+    
+  } else if( class(res_table)[[1]] == "JoinOperator"){
     out_tbl_files <- build_test_data_for_schema( in_proj, res_table, ctx, test_name, 
                                                  test_folder = tmp_folder, 
                                                  docIdMapping=docIdMapping)
