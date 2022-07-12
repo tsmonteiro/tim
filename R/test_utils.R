@@ -733,8 +733,9 @@ assert <- function( x, y,
   
   
   if( metric == 'r2' ){
-    pc <- cor(x, y, method = "pearson")**2
-    if( pc < r2){
+    pc <- cor(x, y, method = "pearson", use="complete.obs")**2
+    
+    if( any(x!=y) &&  pc < r2){
       stop( paste0("Correlation < accepted", msg_fail) )
     }
   }
