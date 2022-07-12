@@ -734,9 +734,10 @@ assert <- function( x, y,
   
   
   if( metric == 'r2' ){
-    if( !(all(x==0) && all(y==0)) || 
-        any(x!=y) || 
-        !(all(is.nan(x) && all(is.nan(y))))){
+    if( (any(x!=0) && any(y!=0)) && 
+        any(x!=y) && 
+        (any(!is.na(x) && any(!is.na(y)))) && 
+        (any(!is.nan(x) && any(!is.nan(y))))){
       
       pc <- cor(x, y, method = "pearson", use = "complete.obs")**2
       
