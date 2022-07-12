@@ -734,10 +734,12 @@ assert <- function( x, y,
   
   
   if( metric == 'r2' ){
-    tryCatch({
+    pc<- tryCatch({
       pc <- cor(x, y, method = "pearson", use = "complete.obs")**2
+      return(pc)
     }, error=function(cond){
       pc<- 1
+      return(pc)
     })
       
     
