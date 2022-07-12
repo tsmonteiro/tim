@@ -734,17 +734,15 @@ assert <- function( x, y,
   
   
   if( metric == 'r2' ){
-    pc<- tryCatch({
-      pc <- cor(x, y, method = "pearson", use = "complete.obs")**2
-      return(pc)
-    }, error=function(cond){
-      pc<- 1
-      return(pc)
-    })
+    if( !(all(x==0) && all(y==0)) || 
+        any(x!=y) || 
+        !(all(is.nan(x) && all(is.nan(y))))){
       
-    
-    if( any(x!=y) &&  pc < r2){
-      stop( paste0("Correlation < accepted", msg_fail) )
+      pc <- cor(x, y, method = "pearson", use = "complete.obs")**2
+      
+      if( pc < r2){
+        stop( paste0("Correlation < accepted", msg_fail) )
+      }
     }
   }
   
