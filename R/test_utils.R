@@ -595,6 +595,7 @@ build_test_input <- function( in_proj, out_tbl_files, ctx, test_name,
 #' check_test_local(tbl, ctx, paste0(step_name, "_absTol"), absTol = 0.001)
 #' 
 #' @import stringr
+#' @import stringi
 #' @import tercen
 #' @import jsonlite
 run_local_test <- function( res_table, ctx, test_name, 
@@ -733,7 +734,7 @@ assert <- function( x, y,
   
   
   if( metric == 'r2' ){
-    pc <- cor(x, y, method = "pearson", use="complete.obs")**2
+    pc <- cor(x, y, method = "pearson")**2
     
     if( any(x!=y) &&  pc < r2){
       stop( paste0("Correlation < accepted", msg_fail) )
@@ -747,7 +748,7 @@ assert <- function( x, y,
     }
   }
   
-  if( metric == 'abstol' ){
+  if( metric == 'reltol' ){
     d <- x/y
     d <- abs(1-d[which(!is.nan(d))])
     if( any(d > relTol)){
